@@ -1,0 +1,30 @@
+{
+  "name": "georesolver",
+  "version": "1.0.0",
+  "description": "Geo Resolver using google GeoAPI and Mysql databank",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kibukamusoke/GeoResolver.git"
+  },
+  "keywords": [
+    "Geo",
+    "Resolver",
+    "Mysql",
+    "GoogleAPI"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kibukamusoke/GeoResolver/issues"
+  },
+  "homepage": "https://github.com/kibukamusoke/GeoResolver#readme",
+  "dependencies": {
+    "@google/maps": "^0.4.2",
+    "express": "^4.15.3",
+    "mysql": "github:mysqljs/mysql"
+  }
+}
