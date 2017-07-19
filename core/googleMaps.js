@@ -1,8 +1,15 @@
 
 let config = require('../config').config;
 
+let APIKey = process.env.APIKey || config.APIKey;
+
+console.log(
+    'variables loaded :: ' + 'APIKey = ' + APIKey
+);
+
+
 let googleMapsClient = require('@google/maps').createClient({
-    key: config.APIKey
+    key: APIKey
 });
 
 

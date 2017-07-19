@@ -3,13 +3,31 @@ let mysql      = require('mysql');
 let Promise = require('bluebird');
 let config = require('../config').config;
 
-console.log(config.dbhost);
+
+let dbhost = process.env.dbhost || config.dbhost;
+let dbuser = process.env.dbuser || config.dbuser;
+let dbpassword = process.env.dbpassword || config.dbpassword;
+let dbname = process.env.dbname || config.dbname;
+
+let addressColumn = process.env.addressColumn || config.addressColumn;
+let identityColumn = process.env.identityColumn || config.identityColumn;
+let sourceTable = process.env.sourceTable || config.sourceTable;
+let statusColumn = process.env.statusColumn || config.statusColumn;
+let limit = process.env.limit || config.limit;
+let resultsColumn = process.env.resultsColumn || config.resultsColumn;
+let updatedDateTimeColunm = process.env.updatedDateTimeColunm || config.updatedDateTimeColunm;
+
 let connection = mysql.createConnection({
-    host     : config.dbhost || 'localhost',
-    user     : config.dbuser || 'root',
-    password : config.dbpassword || 'toor',
-    database : config.dbname || 'GeoLocation'
+    host     : dbhost || 'localhost',
+    user     : dbuser || 'root',
+    password : dbpassword || 'toor',
+    database : dbname || 'GeoLocation'
 });
+
+
+console.log(
+    'variables loaded :: ' + 'dbhost = ' + dbhost
+);
 
 
 let dbConnection = function() {
@@ -51,7 +69,7 @@ module.exports = {
 
             dbConnection()
                 .then((connection) => {
-                    let queryString = 'SELECT ' + config.identityColumn + ' as identityColumn, ' + config.addressColumn + ' as addressColumn' + ' FROM ' + config.sourceTable + ' WHERE ' + config.statusColumn + ' = 0 limit ' + config.limit;
+                    let queryString = 'SELECT ' + identityColumn + ' as identityColumn, ' + addressColumn + ' as addressColumn' + ' FROM ' + sourceTable + ' WHERE ' + statusColumn + ' = 0 limit ' + limit;
                     let query = connection.query(queryString);
                     resolve(query);
                 })
@@ -70,7 +88,7 @@ module.exports = {
 
             dbConnection()
                 .then((connection) => {
-                    connection.query('UPDATE ' + config.sourceTable + ' set ' + config.statusColumn + ' = ? , ' + config.resultsColumn + ' = ? , ' + config.updatedDateTimeColunm + ' = ? where ' + config.identityColumn + ' = ?', data, function (error, results, fields) {
+                    connection.query('UPDATE ' + sourceTable + ' set ' + statusColumn + ' = ? , ' + resultsColumn + ' = ? , ' + updatedDateTimeColunm + ' = ? where ' + identityColumn + ' = ?', data, function (error, results, fields) {
 
                         if (error) {
                             console.log(error);

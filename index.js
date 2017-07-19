@@ -62,7 +62,7 @@ db.getUnresolved()
             })
     }).on('end', function() {
         // all rows have been received
-
+        console.log('Processing complete');
     });
 
 
