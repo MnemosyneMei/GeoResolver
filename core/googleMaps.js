@@ -22,8 +22,6 @@ module.exports = {
       });
   }
 };
-// Geocode an address.
-
 
 /*
 googleMapsClient.reverseGeocode({

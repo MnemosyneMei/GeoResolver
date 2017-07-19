@@ -71,7 +71,7 @@ module.exports = {
             dbConnection()
                 .then((connection) => {
                     connection.query('UPDATE ' + config.sourceTable + ' set ' + config.statusColumn + ' = ? , ' + config.resultsColumn + ' = ? , ' + config.updatedDateTimeColunm + ' = ? where ' + config.identityColumn + ' = ?', data, function (error, results, fields) {
-                        console.log('im here');
+
                         if (error) {
                             console.log(error);
                             reject(error);
