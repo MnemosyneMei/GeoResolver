@@ -14,9 +14,9 @@ module.exports = {
         identityColumn: 'idx',
 
         // add 3 extra columns ::
-        resultsColumn: 'results', // column to push results to:
-        statusColumn: 'status', // column of type int. default to 0 = unprocessed . after processing, value changed to { 1 = success | 2 = error encountered }
-        updatedDateTimeColunm: 'updated_at',
+        resultsColumn: 'results', // column to push results to: TYPE = TEXT
+        statusColumn: 'status', // column of type int. default to 0 = unprocessed . after processing, value changed to { 1 = success | 2 = error encountered } TYPE = int
+        updatedDateTimeColunm: 'updated_at', // TYPE = datetime
 
         // googlemaps API settings
         APIKey: 'AIzaSyBYMfRM54t8roKxR5xxLnakHIpaPcy_Cm8',
