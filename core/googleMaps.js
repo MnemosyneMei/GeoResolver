@@ -1,6 +1,8 @@
 
+let config = require('../config').config;
+
 let googleMapsClient = require('@google/maps').createClient({
-    key: 'AIzaSyBYMfRM54t8roKxR5xxLnakHIpaPcy_Cm8'
+    key: config.APIKey
 });
 
 
