@@ -51,7 +51,7 @@ module.exports = {
 
             dbConnection()
                 .then((connection) => {
-                    let queryString = 'SELECT ' + config.identityColumn + ' as identityColumn, ' + config.addressColumn + ' as addressColumn' + ' FROM ' + config.sourceTable + ' WHERE ' + config.statusColumn + ' = 0';
+                    let queryString = 'SELECT ' + config.identityColumn + ' as identityColumn, ' + config.addressColumn + ' as addressColumn' + ' FROM ' + config.sourceTable + ' WHERE ' + config.statusColumn + ' = 0 limit ' + config.limit;
                     let query = connection.query(queryString);
                     resolve(query);
                 })

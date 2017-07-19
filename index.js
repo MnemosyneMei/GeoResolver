@@ -10,12 +10,11 @@ let updateArray = [];
 
 // fetch records from database ::
 
-
-
 db.getUnresolved()
 .then((query) => {
     query.on('result', function (row) {
         db.pause();// process one by one to use less memory
+
         console.log(row.addressColumn);
         googlemaps.getLatLon(row.addressColumn)
             .then((results) => {
@@ -54,13 +53,23 @@ db.getUnresolved()
 
                     })
                     .catch(err => {
+                        db.resume(); // resume anyway
                         console.log('something just went wrong :: ' + err);
 
                     })
 
 
             })
+    }).on('end', function() {
+        // all rows have been received
+
     });
+
+
+
 }).catch((error) => {
     console.log(error);
+
 });
+
+

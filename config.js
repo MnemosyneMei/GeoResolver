@@ -19,6 +19,8 @@ module.exports = {
         updatedDateTimeColunm: 'updated_at',
 
         // googlemaps API settings
-        APIKey: 'AIzaSyBYMfRM54t8roKxR5xxLnakHIpaPcy_Cm8'
+        APIKey: 'AIzaSyBYMfRM54t8roKxR5xxLnakHIpaPcy_Cm8',
+
+        limit: 1000 //maximum records to process in a single session
     }
 };
