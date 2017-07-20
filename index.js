@@ -13,53 +13,62 @@ let updateArray = [];
 db.getUnresolved()
 .then((query) => {
     query.on('result', function (row) {
-        db.pause();// process one by one to use less memory
 
-        console.log(row.addressColumn);
-        googlemaps.getLatLon(row.addressColumn)
-            .then((results) => {
-
-                updateArray = [
-                    1,
-                    JSON.stringify(results)
-                ];
-
-
-            })
-            .catch((error) => {
-
-                updateArray = [
-                    2,
-                    error
-                ];
-
-                console.log(error);
-            })
+        db.setProcessingFlag([row.identityColumn])
             .then(() => {
-                db.resume();
+                db.pause();// process one by one to use less memory
 
+                console.log(row.addressColumn);
+                googlemaps.getLatLon(row.addressColumn)
+                    .then((results) => {
 
-                let now = moment();
-                updateArray[2] = now.format('YYYY-MM-DD HH:mm:ss');
-                updateArray[3] = row.identityColumn;
+                        updateArray = [
+                            1,
+                            JSON.stringify(results)
+                        ];
 
-                db.updateUnresolved(updateArray)
-                    .then((result) => {
-                        if(result){
-                            console.log('successfully updated location for ' + row.addressColumn);
-                        } else {
-                            console.log('failed to update location for ' + row.addressColumn);
-                        }
 
                     })
-                    .catch(err => {
-                        db.resume(); // resume anyway
-                        console.log('something just went wrong :: ' + err);
+                    .catch((error) => {
+
+                        updateArray = [
+                            2,
+                            error
+                        ];
+
+                        console.log(error);
+                    })
+                    .then(() => {
+                        db.resume();
+
+
+                        let now = moment();
+                        updateArray[2] = now.format('YYYY-MM-DD HH:mm:ss');
+                        updateArray[3] = row.identityColumn;
+
+                        db.updateUnresolved(updateArray)
+                            .then((result) => {
+                                if(result){
+                                    console.log('successfully updated location for ' + row.addressColumn);
+                                } else {
+                                    console.log('failed to update location for ' + row.addressColumn);
+                                }
+
+                            })
+                            .catch(err => {
+                                db.resume(); // resume anyway
+                                console.log('something just went wrong :: ' + err);
+
+                            })
+
 
                     })
-
-
             })
+            .catch(err => {
+                console.log('error updating processing flag' + err);
+            });
+
+
     }).on('end', function() {
         // all rows have been received
         console.log('Processing complete');

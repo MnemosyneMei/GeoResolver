@@ -1,7 +1,14 @@
 
 let config = require('../config').config;
 
+let APIKeys = (process.env.APIKeys || config.APIKey).split(',');
 let APIKey = process.env.APIKey || config.APIKey;
+
+if(APIKeys.length > 0){
+    let processNumber = (process.env.PROCESS_NUMBER || 1) - 1;
+    APIKey = APIKeys[processNumber];
+}
+
 
 console.log(
     'variables loaded :: ' + 'APIKey = ' + APIKey

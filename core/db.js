@@ -17,6 +17,12 @@ let limit = process.env.limit || config.limit;
 let resultsColumn = process.env.resultsColumn || config.resultsColumn;
 let updatedDateTimeColunm = process.env.updatedDateTimeColunm || config.updatedDateTimeColunm;
 
+// get db offset to avoid fetching the same record twice.
+
+let offSet = process.env.OFFSET || 3000;
+let processNumber = (process.env.PROCESS_NUMBER || 1) - 1;
+let dbOffset = Number(offSet) + (Number(processNumber) * Number(limit));
+
 let connection = mysql.createConnection({
     host     : dbhost || 'localhost',
     user     : dbuser || 'root',
@@ -79,6 +85,30 @@ module.exports = {
                 })
         });
 
+
+    },
+
+    setProcessingFlag: function (data) {
+
+        return new Promise((resolve, reject) => {
+                dbConnection()
+                    .then((connection) => {
+                        connection.query('UPDATE ' + sourceTable + ' set ' + statusColumn + ' = 3 where ' + identityColumn + ' = ?', data, function (error, results, fields) {
+                                if (error) {
+                                    console.log(error);
+                                    reject(error);
+                                }
+                                else {
+                                    console.log('processing rows : ' + results.changedRows + ' rows');
+                                    resolve(true);
+                                }
+                            })
+                        })
+                    .catch(err => {
+                        console.log(err);
+
+                    })
+        })
 
     },
 
