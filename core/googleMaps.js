@@ -27,7 +27,7 @@ module.exports = {
               address: address
           }, function(err, response) {
               if (!err) {
-                  // console.dir(response.json.results);
+                   console.dir(response.json.results[0]);
                   resolve(response.json.results);
               } else {
                   reject(err);

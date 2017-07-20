@@ -14,12 +14,12 @@ db.getUnresolved()
 .then((query) => {
     query.on('result', function (row) {
 
-        db.setProcessingFlag([row.identityColumn])
+        db.setProcessingFlag([row.addressColumn])
             .then(() => {
                 db.pause();// process one by one to use less memory
 
-                console.log(row.addressColumn);
-                googlemaps.getLatLon(row.addressColumn)
+                console.log(row.addressColumn + ' MALAYSIA');
+                googlemaps.getLatLon(row.addressColumn + ' MALAYSIA')
                     .then((results) => {
 
                         updateArray = [
@@ -39,12 +39,14 @@ db.getUnresolved()
                         console.log(error);
                     })
                     .then(() => {
-                        db.resume();
+
 
 
                         let now = moment();
                         updateArray[2] = now.format('YYYY-MM-DD HH:mm:ss');
-                        updateArray[3] = row.identityColumn;
+                        updateArray[3] = row.addressColumn;
+
+                        //db.resume();
 
                         db.updateUnresolved(updateArray)
                             .then((result) => {

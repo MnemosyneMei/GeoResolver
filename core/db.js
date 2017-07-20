@@ -75,7 +75,8 @@ module.exports = {
 
             dbConnection()
                 .then((connection) => {
-                    let queryString = 'SELECT ' + identityColumn + ' as identityColumn, ' + addressColumn + ' as addressColumn' + ' FROM ' + sourceTable + ' WHERE ' + statusColumn + ' = 0 limit ' + limit;
+                    //let queryString = 'SELECT ' + identityColumn + ' as identityColumn, ' + addressColumn + ' as addressColumn' + ' FROM ' + sourceTable + ' WHERE ' + statusColumn + ' = 0 limit ' + limit + ' offset ' + dbOffset;
+                    let queryString = 'SELECT ' + addressColumn + ' as addressColumn' + ' FROM ' + sourceTable + ' WHERE ' + statusColumn + ' = 0 GROUP BY '+ addressColumn +' limit ' + limit + ' offset ' + dbOffset;
                     let query = connection.query(queryString);
                     resolve(query);
                 })
@@ -93,7 +94,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
                 dbConnection()
                     .then((connection) => {
-                        connection.query('UPDATE ' + sourceTable + ' set ' + statusColumn + ' = 3 where ' + identityColumn + ' = ?', data, function (error, results, fields) {
+                        connection.query('UPDATE ' + sourceTable + ' set ' + statusColumn + ' = 3 where ' + addressColumn + ' = ?', data, function (error, results, fields) {
                                 if (error) {
                                     console.log(error);
                                     reject(error);
@@ -115,10 +116,10 @@ module.exports = {
 
     updateUnresolved: function (data) {
         return new Promise((resolve,reject) => {
-
+            this.resume();
             dbConnection()
                 .then((connection) => {
-                    connection.query('UPDATE ' + sourceTable + ' set ' + statusColumn + ' = ? , ' + resultsColumn + ' = ? , ' + updatedDateTimeColunm + ' = ? where ' + identityColumn + ' = ?', data, function (error, results, fields) {
+                    connection.query('UPDATE ' + sourceTable + ' set ' + statusColumn + ' = ? , ' + resultsColumn + ' = ? , ' + updatedDateTimeColunm + ' = ? where ' + addressColumn + ' = ?', data, function (error, results, fields) {
 
                         if (error) {
                             console.log(error);
